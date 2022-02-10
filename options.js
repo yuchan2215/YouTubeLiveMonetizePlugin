@@ -1,11 +1,11 @@
 window.addEventListener('load',async function(){
     const autoAd = await getLocalStorage("ad");
     if(autoAd){
-        const select = document.getElementById("autoad");
-        for(let i = 0; i<select.children.length; i++){
-            const child = select.children[i];
+        const select = document.getElementsByName("autoad");
+        for(let i = 0; i<select.length; i++){
+            const child = select[i];
             if(child.value === autoAd){
-                child.selected = "true"
+                child.checked = true
                 break;
             }
         }
@@ -20,8 +20,12 @@ window.addEventListener('load',async function(){
 window.addEventListener('load',function(){
 
     document.getElementById("autoad").addEventListener('change',function(){
-        const select = document.getElementById("autoad");
-        chrome.storage.local.set({"ad":select.children[select.selectedIndex].value},function(){})
+        const select = document.getElementsByName("autoad")
+        let selected
+        for(let i = 0;i<select.length;i++){
+            if(select[i].checked)selected = select[i].value
+        }
+        chrome.storage.local.set({"ad":selected},function(){})
     })
     
     document.getElementById("interval").addEventListener('change',function(){
