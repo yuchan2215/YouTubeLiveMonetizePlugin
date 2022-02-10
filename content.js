@@ -1,28 +1,35 @@
+let status = 0 //0 なんでもない 1 ライブ待ち 2 ライブ中 3 ライブ終了
+let url = location.href
+const REGEXP = "^https://studio.youtube.com/video/.+/livestreaming.*$"
 window.addEventListener("load", async function () {
-    //配信ページでないならなにもしない
-    if (!this.location.href.match("^https://studio.youtube.com/video/.+/livestreaming.*$")) return;
-
-    const timeSpace = document.createElement("div");
-    timeSpace.id = "YTLIMP_TIME"
-    document.getElementsByClassName("left-section style-scope ytls-header")[0].appendChild(timeSpace)
-
     new Promise(async function () {
-        await adRun()
-    });
-    new Promise(async function () {
-        await timeRun()
+        await checkURL()
     })
+
 });
 
 let time = 0;
 let normalTime = 0;
+const checkURL = async function () {
+    setTimeout(function () {
+        new Promise(checkURL)
+    }, 1000)
+
+    if (url !== location.href) {
+        urlChangeEvent()
+        url = location.href
+    }
+}
+
+let adTimeout
+let timeTimeout
 
 //時間ごとに実行するやつ
 const adRun = async function () {
     const nextTime = (await getLocalStorage("adTime")) * 1000
     time = nextTime / 1000
     normalTime = time - 20
-    setTimeout(function () {
+    adTimeout = setTimeout(function () {
         new Promise(adRun);
     }, nextTime);
     //DO SOMETHING
@@ -31,12 +38,12 @@ const adRun = async function () {
 
 //表示をかえるやつ
 const timeRun = async function () {
-    setTimeout(function () {
+    timeTimeout = setTimeout(function () {
         new Promise(timeRun)
     }, 1000)
     time--
     const value = await getLocalStorage("ad");
-    if(value === "true") {
+    if (value === "true") {
         const min = Math.floor(time / 60)
         let sec = time % 60
         if (sec < 10) sec = "0" + sec
@@ -47,9 +54,35 @@ const timeRun = async function () {
             'color': time > normalTime ? 'orange' : 'white'
         }
         $("#YTLIMP_TIME").css(query)
-    }else{
+    } else {
         document.getElementById("YTLIMP_TIME").innerText = ""
     }
+
+}
+
+function urlChangeEvent() {
+    console.log(location.href)
+    //もし配信ページでないなら定期実行をキャンセル
+    if (!this.location.href.match(REGEXP)) {
+        clearTimeout(adTimeout)
+        clearTimeout(timeTimeout)
+        return
+    }
+    
+    //要素がないなら作成
+    if(!document.getElementById("YTLIMP_TIME")) {
+        const timeSpace = document.createElement("div");
+        timeSpace.id = "YTLIMP_TIME"
+        document.getElementsByClassName("left-section style-scope ytls-header")[0].appendChild(timeSpace)
+    }
+    //定期実行の作成
+    new Promise(async function () {
+        await adRun()
+    });
+    new Promise(async function () {
+        await timeRun()
+    })
+
 
 }
 
