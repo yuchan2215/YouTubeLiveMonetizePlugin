@@ -20,14 +20,23 @@ const checkContent = async function () {
             if (status !== 2) {
                 console.log("Streaming")
                 status = 2
+                try{clearInterval(adTimeout)}catch(_){}
+                try{clearInterval(timeTimeout)}catch(_){}
+                //定期実行の作成
+                new Promise(async function () {
+                    await adRun()
+                }).then();
+                new Promise(async function () {
+                    await timeRun()
+                }).then()
             }
         } else if (status === 2) {
             status = 3
+            clearInterval(adTimeout)
             //配信のタブを閉じるときの処理
             if (await getLocalStorage("endclose", "false") === "true") {
 
                 status = 4
-                clearInterval(adTimeout)
                 time = 10
                 normalTime = -1
                 document.getElementById("YTLIMP_SUB").innerText = "秒でタブを閉じます"
@@ -102,13 +111,6 @@ function urlChangeEvent() {
         subSpace.id = "YTLIMP_SUB"
         document.getElementsByClassName("left-section style-scope ytls-header")[0].appendChild(subSpace)
     }
-    //定期実行の作成
-    new Promise(async function () {
-        await adRun()
-    }).then();
-    new Promise(async function () {
-        await timeRun()
-    }).then()
 
 
 }
