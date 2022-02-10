@@ -24,7 +24,7 @@ const checkURL = async function () {
 let adTimeout
 let timeTimeout
 
-//時間ごとに実行するやつ
+//ユーザーが設定した時間ごとに実行するやつ
 const adRun = async function () {
     const nextTime = (await getLocalStorage("adTime")) * 1000
     time = nextTime / 1000
@@ -32,7 +32,6 @@ const adRun = async function () {
     adTimeout = setTimeout(function () {
         new Promise(adRun);
     }, nextTime);
-    //DO SOMETHING
     await pushLive()
 };
 
@@ -68,9 +67,9 @@ function urlChangeEvent() {
         clearTimeout(timeTimeout)
         return
     }
-    
+
     //要素がないなら作成
-    if(!document.getElementById("YTLIMP_TIME")) {
+    if (!document.getElementById("YTLIMP_TIME")) {
         const timeSpace = document.createElement("div");
         timeSpace.id = "YTLIMP_TIME"
         document.getElementsByClassName("left-section style-scope ytls-header")[0].appendChild(timeSpace)
@@ -78,10 +77,10 @@ function urlChangeEvent() {
     //定期実行の作成
     new Promise(async function () {
         await adRun()
-    });
+    }).then();
     new Promise(async function () {
         await timeRun()
-    })
+    }).then()
 
 
 }
