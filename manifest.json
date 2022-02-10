@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Live Monetize Plugin",
+  "short_name": "YTLiMP",
+  "version": "1.0.0",
+  "description": "YouTube Live Monetize Plugin",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "presistent": true
+  },
+  "permissions": ["tabs", "activeTab", "storage","alarms"],
+  "action": {
+    "default_icon": {
+      "19": "icon128.png"
+    },
+    "default_title": "Settings",
+    "default_popup": "option.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["content.js","jquery.min.js"],
+      "matches": ["https://studio.youtube.com/*"]
+    }
+  ]
+}
