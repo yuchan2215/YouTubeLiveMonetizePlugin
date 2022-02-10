@@ -3,7 +3,7 @@ let url = location.href
 const REGEXP = "^https://studio.youtube.com/video/.+/livestreaming.*$"
 window.addEventListener("load", async function () {
     new Promise(async function () {
-        await checkURL()
+        await checkContent()
     })
     urlChangeEvent()
 
@@ -11,9 +11,9 @@ window.addEventListener("load", async function () {
 
 let time = 0;
 let normalTime = 0;
-const checkURL = async function () {
+const checkContent = async function () {
     setTimeout(function () {
-        new Promise(checkURL)
+        new Promise(checkContent)
     }, 1000)
 
     if (url !== location.href) {
