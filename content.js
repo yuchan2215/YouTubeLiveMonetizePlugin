@@ -17,11 +17,11 @@ const checkContent = async function () {
     }, 1000)
     if (url.match(REGEXP)) {
         if (!document.getElementById("end-stream-button").hidden) {
-            if(status !== 2) {
+            if (status !== 2) {
                 console.log("Streaming")
                 status = 2
             }
-        }else if(status ===2) {
+        } else if (status === 2) {
             status = 3
             //配信のタブを閉じるときの処理
             if (await getLocalStorage("endclose", "false") === "true") {
@@ -37,8 +37,9 @@ const checkContent = async function () {
                     })
                 }, 10000)
 
+            }
         }
-    }}
+    }
     if (url !== location.href) {
         urlChangeEvent()
         url = location.href
@@ -50,7 +51,7 @@ let timeTimeout
 
 //ユーザーが設定した時間ごとに実行するやつ
 const adRun = async function () {
-    const nextTime = (await getLocalStorage("adTime","60")) * 1000
+    const nextTime = (await getLocalStorage("adTime", "60")) * 1000
     time = nextTime / 1000
     normalTime = time - 20
     adTimeout = setTimeout(function () {
@@ -65,7 +66,7 @@ const timeRun = async function () {
         new Promise(timeRun)
     }, 1000)
     time--
-    const value = await getLocalStorage("ad","false");
+    const value = await getLocalStorage("ad", "false");
     if (value === "true" && status !== 3 || status === 4) {
         const min = Math.floor(time / 60)
         let sec = time % 60
@@ -113,16 +114,16 @@ function urlChangeEvent() {
 }
 
 async function pushLive() {
-    const value = await getLocalStorage("ad","false");
+    const value = await getLocalStorage("ad", "false");
     if (value === "true") {
         document.getElementById("insert-ad-button").click();
     }
 }
 
-async function getLocalStorage(text,def){
-    return await new Promise(function(resolve){
-        chrome.storage.local.get(text,function(result){
-            if(result[text])
+async function getLocalStorage(text, def) {
+    return await new Promise(function (resolve) {
+        chrome.storage.local.get(text, function (result) {
+            if (result[text])
                 resolve(result[text])
             else
                 resolve(def)
