@@ -5,6 +5,7 @@ window.addEventListener("load", async function () {
     new Promise(async function () {
         await checkURL()
     })
+    urlChangeEvent()
 
 });
 
