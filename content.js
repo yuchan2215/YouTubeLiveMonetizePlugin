@@ -1,4 +1,4 @@
-let status = 0 //0 なんでもない 1 ライブ待ち 2 ライブ中 3 ライブ終了
+let status = 0 //0 なんでもない 1 ライブ待ち 2 ライブ中 3 ライブ終了 4 カウントダウン
 let url = location.href
 const REGEXP = "^https://studio.youtube.com/video/.+/livestreaming.*$"
 window.addEventListener("load", async function () {
@@ -15,7 +15,30 @@ const checkContent = async function () {
     setTimeout(function () {
         new Promise(checkContent)
     }, 1000)
+    if (url.match(REGEXP)) {
+        if (!document.getElementById("end-stream-button").hidden) {
+            if(status !== 2) {
+                console.log("Streaming")
+                status = 2
+            }
+        }else if(status ===2) {
+            status = 3
+            //配信のタブを閉じるときの処理
+            if (await getLocalStorage("endclose", "false") === "true") {
 
+                status = 4
+                clearInterval(adTimeout)
+                time = 10
+                normalTime = -1
+                document.getElementById("YTLIMP_SUB").innerText = "秒でタブを閉じます"
+                setTimeout(async function () {
+                    await chrome.runtime.sendMessage({msg: "close", title: document.title}, function (response) {
+                        console.log(response)
+                    })
+                }, 10000)
+
+        }
+    }}
     if (url !== location.href) {
         urlChangeEvent()
         url = location.href
@@ -27,7 +50,7 @@ let timeTimeout
 
 //ユーザーが設定した時間ごとに実行するやつ
 const adRun = async function () {
-    const nextTime = (await getLocalStorage("adTime")) * 1000
+    const nextTime = (await getLocalStorage("adTime","60")) * 1000
     time = nextTime / 1000
     normalTime = time - 20
     adTimeout = setTimeout(function () {
@@ -42,8 +65,8 @@ const timeRun = async function () {
         new Promise(timeRun)
     }, 1000)
     time--
-    const value = await getLocalStorage("ad");
-    if (value === "true") {
+    const value = await getLocalStorage("ad","false");
+    if (value === "true" && status !== 3 || status === 4) {
         const min = Math.floor(time / 60)
         let sec = time % 60
         if (sec < 10) sec = "0" + sec
@@ -68,12 +91,15 @@ function urlChangeEvent() {
         clearTimeout(timeTimeout)
         return
     }
-
+    status = 1
     //要素がないなら作成
     if (!document.getElementById("YTLIMP_TIME")) {
         const timeSpace = document.createElement("div");
         timeSpace.id = "YTLIMP_TIME"
         document.getElementsByClassName("left-section style-scope ytls-header")[0].appendChild(timeSpace)
+        const subSpace = document.createElement("div");
+        subSpace.id = "YTLIMP_SUB"
+        document.getElementsByClassName("left-section style-scope ytls-header")[0].appendChild(subSpace)
     }
     //定期実行の作成
     new Promise(async function () {
@@ -87,16 +113,19 @@ function urlChangeEvent() {
 }
 
 async function pushLive() {
-    const value = await getLocalStorage("ad");
+    const value = await getLocalStorage("ad","false");
     if (value === "true") {
         document.getElementById("insert-ad-button").click();
     }
 }
 
-async function getLocalStorage(text) {
-    return await new Promise(function (resolve) {
-        chrome.storage.local.get(text, function (result) {
-            resolve(result[text]);
+async function getLocalStorage(text,def){
+    return await new Promise(function(resolve){
+        chrome.storage.local.get(text,function(result){
+            if(result[text])
+                resolve(result[text])
+            else
+                resolve(def)
         });
     });
 }

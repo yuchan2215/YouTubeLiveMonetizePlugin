@@ -7,7 +7,7 @@
   "icons": {
     "128": "icon128.png"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage","tabs"],
   "action": {
     "default_icon": {
       "19": "icon128.png"
@@ -20,5 +20,9 @@
       "js": ["content.js","jquery.min.js"],
       "matches": ["https://studio.youtube.com/*"]
     }
-  ]
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "presistent": true
+  }
 }
