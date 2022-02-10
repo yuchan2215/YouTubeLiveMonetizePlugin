@@ -35,16 +35,21 @@ const timeRun = async function () {
         new Promise(timeRun)
     }, 1000)
     time--
-    const min = Math.floor(time / 60)
-    let sec = time % 60
-    if (sec < 10) sec = "0" + sec
-    document.getElementById("YTLIMP_TIME").innerText = (min > 0 ? min + ":" : "") + sec
-    let query = {
-        'font-size': '3em',
-        'margin-left': '1em',
-        'color': time > normalTime ? 'orange' : 'white'
+    const value = await getLocalStorage("ad");
+    if(value === "true") {
+        const min = Math.floor(time / 60)
+        let sec = time % 60
+        if (sec < 10) sec = "0" + sec
+        document.getElementById("YTLIMP_TIME").innerText = (min > 0 ? min + ":" : "") + sec
+        let query = {
+            'font-size': '3em',
+            'margin-left': '1em',
+            'color': time > normalTime ? 'orange' : 'white'
+        }
+        $("#YTLIMP_TIME").css(query)
+    }else{
+        document.getElementById("YTLIMP_TIME").innerText = ""
     }
-    $("#YTLIMP_TIME").css(query)
 
 }
 
