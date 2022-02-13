@@ -60,7 +60,7 @@ let timeTimeout
 
 //ユーザーが設定した時間ごとに実行するやつ
 const adRun = async function () {
-    const nextTime = (await getLocalStorage("adTime", "60")) * 1000
+    const nextTime = (await getNextTime()) * 1000
     time = nextTime / 1000
     normalTime = time - 20
     adTimeout = setTimeout(function () {
@@ -69,6 +69,20 @@ const adRun = async function () {
     await pushLive()
 };
 
+//次の時間を取得
+async function getNextTime(){
+    const minTime = parseInt(await getLocalStorage("adTime", "60"))
+    const maxTime = parseInt(await getLocalStorage("maxAdTime", "0"))
+    if(maxTime === 0)return minTime
+    return getRandomInt(minTime,maxTime + 1)
+}
+
+//https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
 //表示をかえるやつ
 const timeRun = async function () {
     timeTimeout = setTimeout(function () {
