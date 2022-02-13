@@ -1,87 +1,76 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>設定</title>
-    <style>
-        body {
-            width: 700px;
-            font-size: 12pt;
-        }
-
-        div {
-            margin-bottom: 0.8em
-        }
-
-        div * {
-            margin: 0;
-        }
-
-        .temp {
-            margin-left: 10px;
-            color: gray;
-            font-size: 0.8em;
-        }
-
-        h1 {
-            font-size: 20pt;
-        }
-
-        summary {
-            background-color: antiquewhite;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>設定</title>
+	<style>
+	    body{
+	      width:700px;
+	      font-size: 12pt;
+	    }
+		div{
+			margin-bottom: 0.8em
+		}
+		div *{
+			margin: 0;
+		}
+		.temp{
+			margin-left:10px;
+			color:gray;
+			font-size:0.8em;
+		}
+		h1{
+			font-size: 20pt;
+		}
+		summary{
+			background-color: antiquewhite;
+		}
+  	</style>
 </head>
 <body>
-<div id="ad-enable">
-    自動広告：
-    <label><input type="radio" name="ad-enable" value="false">オフ</label>
-    <label><input type="radio" name="ad-enable" value="true">オン</label>
-</div>
-<div id="close-enable">
-    ライブ終了時にタブを閉じる：
-    <label><input type="radio" name="close-enable" value="false">オフ</label>
-    <label><input type="radio" name="close-enable" value="true">オン</label>
-</div>
+	<div id="ad-enable">
+		自動広告：
+		<label><input type="radio" name="ad-enable" value="false">オフ</label>
+		<label><input type="radio" name="ad-enable" value="true">オン</label>
+	</div>
+	<div id="close-enable">
+		ライブ終了時にタブを閉じる：
+		<label><input type="radio" name="close-enable" value="false">オフ</label>
+		<label><input type="radio" name="close-enable" value="true">オン</label>
+	</div>
 
-<div id="interval">
-    <label for="interval">実行間隔（最低）<input type="number" id="interval-value" name="interval-value"></label>
-    <div class="temp">単位：秒</div>
-</div>
-<div id="interval-max">
-    <label for="interval-max-value">実行間隔（最高）<input type="number" id="interval-max-value"
-                                                   name="interval-max-value"></label>
-    <div class="temp">単位：秒 0以外にすると、最低～最高の数値でランダムに時間が決まります。</div>
-</div>
-<details>
-    <summary>配信開始時に自動でタブを開く（クリックで詳細を開く）</summary>
+	<div id="interval">
+		<label for="interval">実行間隔（最低）<input type="number" id="interval-value" name="interval-value"></label>
+		<div class="temp">単位：秒</div>
+	</div>
+	<div id="interval-max">
+		<label for="interval-max-value">実行間隔（最高）<input type="number" id="interval-max-value" name="interval-max-value"></label>
+		<div class="temp">単位：秒 0以外にすると、最低～最高の数値でランダムに時間が決まります。</div>
+	</div>
+	<details>
+		<summary>配信開始時に自動でタブを開く（クリックで詳細を開く）</summary>
 
-    <div id="api">
-        <label for="api-key">APIKey<input type="password" id="api-key" name="api-key"></label>
-        <div class="temp">以下の機能を利用する際は必須です。<br>
-            <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank">こちらから</a>APIを有効化し、
-            <a href="https://console.cloud.google.com/apis/credentials" target="_blank">こちらから</a>YouTube Data API v3
-            のAPIキーを取得してください。<br>記入した場合、APIキーの利用を当拡張機能に承諾したものとします。
-        </div>
-    </div>
-    <div id="api-time">
-        <label for="api-time-value">取得間隔<input type="number" id="api-time-value" name="api-time-value"></label>
-        <div class="temp">単位：秒　0にすることで機能を無効化します。推奨：15 <br>(1日に約10000回取得するとAPI制限がかかります)</div>
-    </div>
-    <div id="api-channel">
-        <label for="api-channel-value">チャンネルID<input type="text" id="api-channel-value"
-                                                     name="api-channel-value"></label>
-        <div class="temp">監視対象のYouTubeチャンネルIDを記入してください。<br>
-            カスタムチャンネルURLを設定している場合、<a href="https://commentpicker.com/youtube-channel-id.php" target="_blank">こちらから</a>チャンネルIDを確認できます<br>（当拡張機能とは無関係のサイトです）
-        </div>
-    </div>
-    <div id="api-timing">
-        YouTubeを開くタイミング　
-        <label><input type="checkbox" name="api-timing" value="reserve">予約時</label>
-        <label><input type="checkbox" name="api-timing" value="start">開始時</label>
-    </div>
-</details>
-<script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript" src="options.js"></script>
+		<div id="api">
+			<label for="api-key">APIKey<input type="password" id="api-key" name="api-key"></label>
+			<div class="temp">以下の機能を利用する際は必須です。<br>
+				<a href="https://console.cloud.google.com/apis/credentials" target="_blank">こちらから</a>YouTube Data API v3 のAPIキーを取得してください。</div>
+		</div>
+		<div id="api-time">
+			<label for="api-time-value">取得間隔<input type="number" id="api-time-value" name="api-time-value"></label>
+			<div class="temp">単位：秒　0にすることで機能を無効化します。推奨：15 <br>(1日に約10000回取得するとAPI制限がかかります)</div>
+		</div>
+		<div id="api-channel">
+			<label for="api-channel-value">チャンネルID<input type="text" id="api-channel-value" name="api-channel-value"></label>
+			<div class="temp">監視対象のYouTubeチャンネルIDを記入してください。<br>
+			カスタムチャンネルURLを設定している場合、<a href="https://commentpicker.com/youtube-channel-id.php" target="_blank">こちらから</a>チャンネルIDを確認できます<br>（当拡張機能とは無関係のサイトです）</div>
+		</div>
+		<div id="api-timing">
+			YouTubeを開くタイミング　
+			<label><input type="checkbox" name="api-timing" value="reserve">予約時</label>
+			<label><input type="checkbox" name="api-timing" value="start">開始時</label>
+		</div>
+	</details>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="options.js"></script>
 </body>
 </html>
