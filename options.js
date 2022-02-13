@@ -6,7 +6,10 @@ window.addEventListener('load', async function () {
     setInputValue("close-enable", endClose)
 
     const adTime = await getLocalStorage("adTime", "60");
-    setInputValue("interval", adTime)
+    setInputValue("interval-value", adTime)
+
+    const maxAdTime = await getLocalStorage("maxAdTime","0")
+    setInputValue("interval-max-value",maxAdTime)
 
 })
 
@@ -21,9 +24,14 @@ window.addEventListener('load', function () {
         setLocalStorage("endclose", selected)
     })
 
-    document.getElementById("interval").addEventListener('change', function () {
-        const input = $("input[name=interval]").val()
+    document.getElementById("interval-value").addEventListener('change', function () {
+        const input = $("input[name=interval-value]").val()
         setLocalStorage("adTime", input)
+    })
+
+    document.getElementById("interval-max").addEventListener('change',function(){
+        const input = $("input[name=interval-max-value]").val()
+        setLocalStorage("maxAdTime", input)
     })
 
 })
