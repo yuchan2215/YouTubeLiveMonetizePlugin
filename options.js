@@ -13,10 +13,10 @@ window.addEventListener('load', async function () {
 
     const apiKey = await getLocalStorage("apiKey", "")
     setInputValue("api-key", apiKey)
-    /**
+
     const apiTime = await getLocalStorage("apiTime", "")
     setInputValue("api-time-value", apiTime)
-    **/
+
     const apiChannel = await getLocalStorage("apiChannel", "")
     setInputValue("api-channel-value", apiChannel)
 
@@ -31,7 +31,7 @@ window.addEventListener('load', function () {
     setInputListener("interval-value", "adTime")
     setInputListener("interval-max-value", "maxAdTime")
     setInputListener("api-key", "apiKey")
-    //setInputListener("api-time-value", "apiTime")
+    setInputListener("api-time-value", "apiTime")
     setInputListener("api-channel-value", "apiChannel")
     document.getElementById("api-timing").addEventListener('change', function () {
         const timings = []
