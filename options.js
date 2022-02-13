@@ -1,59 +1,38 @@
 window.addEventListener('load',async function(){
     const autoAd = await getLocalStorage("ad","false");
-    if(autoAd){
-        const select = document.getElementsByName("autoad");
-        for(let i = 0; i<select.length; i++){
-            const child = select[i];
-            if(child.value === autoAd){
-                child.checked = true
-                break;
-            }
-        }
-    }
+    setInputValue("autoad",autoAd)
+
     const endClose = await getLocalStorage("endclose","false");
-    if(autoAd){
-        const select = document.getElementsByName("endclose");
-        for(let i = 0; i<select.length; i++){
-            const child = select[i];
-            if(child.value === endClose){
-                child.checked = true
-                break;
-            }
-        }
-    }
+    setInputValue("endclose",endClose)
 
     const adTime = await getLocalStorage("adTime","60");
-    if(adTime){
-        const input = document.getElementById("interval");
-        input.value = adTime
-    }
+    setInputValue("interval",adTime)
+
 })
+
 window.addEventListener('load',function(){
 
     document.getElementById("autoad").addEventListener('change',function(){
-        const select = document.getElementsByName("autoad")
-        let selected
-        for(let i = 0;i<select.length;i++){
-            if(select[i].checked)selected = select[i].value
-        }
+        const selected = getInputValue("autoad")
         setLocalStorage("ad",selected)
     })
     document.getElementById("endclose").addEventListener('change',function(){
-        const select = document.getElementsByName("endclose")
-        let selected
-        for(let i = 0;i<select.length;i++){
-            if(select[i].checked)selected = select[i].value
-        }
+        const selected = getInputValue("endclose")
         setLocalStorage("endclose",selected)
     })
 
     document.getElementById("interval").addEventListener('change',function(){
-        const input = document.getElementById("interval").value;
+        const input = getInputValue("interval")
         setLocalStorage("adTime",input)
     })
 
 })
-
+function setInputValue(key,value){
+    $(`input[name=${key}]`).val([value])
+}
+function getInputValue(key){
+    return $(`input[name=${key}]`).val()
+}
 async function getLocalStorage(text,def){
     return await new Promise(function(resolve){
         chrome.storage.local.get(text,function(result){
