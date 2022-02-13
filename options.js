@@ -1,9 +1,9 @@
 window.addEventListener('load', async function () {
     const autoAd = await getLocalStorage("ad", "false");
-    setInputValue("autoad", autoAd)
+    setInputValue("ad-enable", autoAd)
 
     const endClose = await getLocalStorage("endclose", "false");
-    setInputValue("endclose", endClose)
+    setInputValue("close-enable", endClose)
 
     const adTime = await getLocalStorage("adTime", "60");
     setInputValue("interval", adTime)
@@ -12,17 +12,17 @@ window.addEventListener('load', async function () {
 
 window.addEventListener('load', function () {
 
-    document.getElementById("autoad").addEventListener('change', function () {
-        const selected = getInputValue("autoad")
+    document.getElementById("ad-enable").addEventListener('change', function () {
+        const selected = $("input[name=ad-enable]:checked").val()
         setLocalStorage("ad", selected)
     })
-    document.getElementById("endclose").addEventListener('change', function () {
-        const selected = getInputValue("endclose")
+    document.getElementById("close-enable").addEventListener('change', function () {
+        const selected = $("input[name=close-enable]:checked").val()
         setLocalStorage("endclose", selected)
     })
 
     document.getElementById("interval").addEventListener('change', function () {
-        const input = getInputValue("interval")
+        const input = $("input[name=interval]").val()
         setLocalStorage("adTime", input)
     })
 
@@ -32,9 +32,6 @@ function setInputValue(key, value) {
     $(`input[name=${key}]`).val([value])
 }
 
-function getInputValue(key) {
-    return $(`input[name=${key}]`).val()
-}
 
 async function getLocalStorage(text, def) {
     return await new Promise(function (resolve) {
