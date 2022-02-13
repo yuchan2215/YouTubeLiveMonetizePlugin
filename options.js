@@ -1,9 +1,9 @@
 window.addEventListener('load', async function () {
     const autoAd = await getLocalStorage("ad", "false");
-    setInputValue("ad-enable", autoAd,true)
+    setInputValue("ad-enable", autoAd)
 
     const endClose = await getLocalStorage("endclose", "false");
-    setInputValue("close-enable", endClose,true)
+    setInputValue("close-enable", endClose)
 
     const adTime = await getLocalStorage("adTime", "60");
     setInputValue("interval-value", adTime)
@@ -11,46 +11,33 @@ window.addEventListener('load', async function () {
     const maxAdTime = await getLocalStorage("maxAdTime","0")
     setInputValue("interval-max-value",maxAdTime)
 
-    const apiKey = await getLocalStorage("apiKey","")
-    setInputValue("api-key",apiKey)
-
-    const apiTime = await getLocalStorage("apiTime","")
-    setInputValue("api-time-value",apiTime)
-
-    const apiChannel = await getLocalStorage("apiChannel","")
-    setInputValue("api-channel-value",apiChannel)
-
-    const apiTiming = await getLocalStorage("apiTiming","")
-    setInputValue("api-timing",apiTiming.split(","))
-
 })
 
 window.addEventListener('load', function () {
-    setInputListener("ad-enable","ad",":checked")
-    setInputListener("close-enable","endclose",":checked")
-    setInputListener("interval-value","adTime")
-    setInputListener("interval-max-value","maxAdTime")
-    setInputListener("api-key","apiKey")
-    setInputListener("api-time-value","apiTime")
-    setInputListener("api-channel-value","apiChannel")
-    document.getElementById("api-timing").addEventListener('change',function(){
-        const timings = []
-        $('input[name=api-timing]:checked').each(function(){
-            timings.push($(this).val())
-        })
-        setLocalStorage("apiTiming",timings.join(","))
+
+    document.getElementById("ad-enable").addEventListener('change', function () {
+        const selected = $("input[name=ad-enable]:checked").val()
+        setLocalStorage("ad", selected)
+    })
+    document.getElementById("close-enable").addEventListener('change', function () {
+        const selected = $("input[name=close-enable]:checked").val()
+        setLocalStorage("endclose", selected)
+    })
+
+    document.getElementById("interval-value").addEventListener('change', function () {
+        const input = $("input[name=interval-value]").val()
+        setLocalStorage("adTime", input)
+    })
+
+    document.getElementById("interval-max").addEventListener('change',function(){
+        const input = $("input[name=interval-max-value]").val()
+        setLocalStorage("maxAdTime", input)
     })
 
 })
-function setInputListener(divId,storageName,option = ""){
-    document.getElementById(divId).addEventListener('change',function(){
-        const input = $(`input[name=${divId}]${option}`).val()
-        setLocalStorage(storageName,input)
-    })
-}
 
-function setInputValue(key, value,arr = false) {
-    $(`input[name=${key}]`).val(arr? [value] : value)
+function setInputValue(key, value) {
+    $(`input[name=${key}]`).val([value])
 }
 
 
