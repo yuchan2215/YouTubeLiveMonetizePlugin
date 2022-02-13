@@ -36,7 +36,7 @@ window.addEventListener('load',function(){
         for(let i = 0;i<select.length;i++){
             if(select[i].checked)selected = select[i].value
         }
-        chrome.storage.local.set({"ad":selected},function(){})
+        setLocalStorage("ad",selected)
     })
     document.getElementById("endclose").addEventListener('change',function(){
         const select = document.getElementsByName("endclose")
@@ -44,12 +44,12 @@ window.addEventListener('load',function(){
         for(let i = 0;i<select.length;i++){
             if(select[i].checked)selected = select[i].value
         }
-        chrome.storage.local.set({"endclose":selected},function(){})
+        setLocalStorage("endclose",selected)
     })
 
     document.getElementById("interval").addEventListener('change',function(){
         const input = document.getElementById("interval").value;
-        chrome.storage.local.set({"adTime":input},function(){})
+        setLocalStorage("adTime",input)
     })
 
 })
@@ -63,4 +63,7 @@ async function getLocalStorage(text,def){
                 resolve(def)
         });
     });
+}
+function setLocalStorage(key,value){
+    chrome.storage.local.set({[key]:value},function(){})
 }
