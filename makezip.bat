@@ -14,19 +14,17 @@ cd %temp_dir%
 
 @REM パッケージに同梱しないファイルを削除する
 del makezip.bat
-del autolive.zip
 del .gitignore
 rmdir /s /q ".git"
 rmdir /s /q ".idea"
+rmdir /s /q "build"
 
 @REM 古いパッケージを削除する
-del %current_dir%autolive.zip
+del %current_dir%build\autolive.zip
 
 @REM パッケージの作成
-"C:\Program Files\7-Zip\7z.exe" a %current_dir%autolive.zip *
+"C:\Program Files\7-Zip\7z.exe" a %current_dir%build\autolive.zip *
 
 @REM tempフォルダを空にする
 cd %current_dir%
 rmdir /s /q %temp_dir%
-
-PAUSE
