@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "YouTube Live Monetize Plugin",
   "short_name": "YTLiMP",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "YouTube Live Monetize Plugin",
   "icons": {
     "128": "icon128.png"
